@@ -24,4 +24,15 @@ echo 'вывод 4 теста:'
 echo ''
 ./result < ./Tests/test4.txt
 echo '______________________'
-
+echo '          тест#5:'
+cat ./Tests/test5.txt
+echo 'вывод 5 теста:'
+echo ''
+./result < ./Tests/test5.txt
+echo '______________________'
+echo '          тест#6:'
+cat ./Tests/test4.txt
+echo 'вывод 6 теста:'
+echo ''
+./result < ./Tests/test6.txt
+echo '______________________'

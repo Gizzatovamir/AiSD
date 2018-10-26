@@ -9,21 +9,26 @@ class List{
 	List *next;
 	List *Sub_list;
 	List(std::string str){					//constructor
-		if(str.length() != 0){
+		if(str != ""){
 			if(str[0] =='('){
 				str.erase(0,1);
 				str.erase(str.length()-1,1);
 			}
 			El = str[0];
+			std::cout << El << std::endl;
 			if(str[1]=='('){
 				//str.erase(0,1);
 				std::string sub_str = str.substr(1,srch_sub_list(str));
 				//std::cout<<str.substr(1,srch_sub_list(str))<<" "<< srch_sub_list(str) <<std::endl;
-			  	Sub_list = new List(sub_str);
+				Sub_list = new List(sub_str);
 				str.erase(1,sub_str.length());
 			}
+			else{
+				Sub_list = nullptr;
+			}
 			str.erase(0,1);
-			next = new List(str);
+			//if(str!="")
+				next = new List(str);
 		}
 		else{
 			El = '\0';
@@ -145,17 +150,21 @@ bool is_valuable(std::string str){						//checking the text for valuability
 
 int main(){
 	std::string str;
+	std::cout << "Введите иерархичесий список" << std::endl;
 	getline(std::cin,str);						//geting the text
 	str=std::regex_replace(str,std::regex(" "),"");			//deleting all spaces
-	std::cout << str << std::endl;
+//	std::cout << str << std::endl;
 	if(is_valuable(str)){
 		List *lst = new List(str);
 		lst->print_list();					//creating list
 		std::cout<<std::endl;
+		lst->print_list(); 
 		List *rev_list = rev(lst);				//reversing the list
 		std::cout << "(";
 		rev_list->print_list();
 		std::cout<<")"<<std::endl;
+		delete(rev_list);
+		delete(lst);
 
 	}
 	else{
