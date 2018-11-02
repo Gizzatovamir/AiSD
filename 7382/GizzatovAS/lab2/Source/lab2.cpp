@@ -38,13 +38,13 @@ class List{
 		
 	}
 	void delete_list(List *lst){						//recursive destructor
-	    if ( next != nullptr ) {
-        	    if (count()!=0) {
-               		delete_list(next);
-            	    }
-		delete Sub_list;
-        	}
+		if(lst!=nullptr){	
+			delete_list(lst->next);
+			delete_list(lst->Sub_list);	
+		}
+		delete lst;
 	}
+
 	List(char s,List *sub_str_list){			//constructor for Sub_list
 		El = s;
 		Sub_list = sub_str_list;
@@ -176,9 +176,8 @@ int main(){
 		std::cout << "(";
 		rev_list->print_list();
 		std::cout<<")"<<std::endl;
-		delete(rev_list);
-		delete(lst);
-
+		lst->delete_list(lst);
+		rev_list->delete_list(rev_list);
 	}
 	else{
 		std::cout << "text is not correct" << std::endl;
