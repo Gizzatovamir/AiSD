@@ -15,7 +15,7 @@ class List{
 				str.erase(str.length()-1,1);
 			}
 			El = str[0];
-			std::cout << El << std::endl;
+			//std::cout << El << std::endl;
 			if(str[1]=='('){
 				//str.erase(0,1);
 				std::string sub_str = str.substr(1,srch_sub_list(str));
@@ -37,11 +37,15 @@ class List{
 		}
 		
 	}
-	~List(){						//destructor
-		delete next;
-		delete Sub_list;	
+	void delete_list(List *lst){						//recursive destructor
+		if(lst!=nullptr){	
+			delete_list(lst->next);
+			delete_list(lst->Sub_list);	
+		}
+		delete lst;
 	}
-	List(char s,List *sub_str_list){			//constructor in_list
+
+	List(char s,List *sub_str_list){			//constructor for Sub_list
 		El = s;
 		Sub_list = sub_str_list;
 	}
@@ -57,7 +61,7 @@ class List{
 		return res;
 	}
 
-	void print_list(){					//printing the list in the terminal
+	void print_list(){					//recursive printing the list in the terminal
 		if(Sub_list != nullptr){
 			std::cout<< "(";
                         Sub_list->print_list();
@@ -73,7 +77,7 @@ class List{
 		}
 	}
 };
-List *rev(List *head) {						//function that reversing the list
+List *rev(List *head) {						//function that reversing the list by changing adresses of elements of the list
 	List *ptr1 = head;
 	List *ptr2;
 	List *ptr_last;
@@ -94,7 +98,10 @@ List *rev(List *head) {						//function that reversing the list
 	while (ptr1!= nullptr) {
 		head->next = ptr2;
 		ptr2 = head;
-		std::cout << "head " << ptr2->El <<std::endl;
+		std::cout << "Call recursive function ";
+		std::cout << "and current list is: "; 
+		ptr2->print_list(); 
+		std::cout<<std::endl;
 		head = ptr1;
 		ptr1 = ptr1->next;
 	}
@@ -154,18 +161,23 @@ int main(){
 	getline(std::cin,str);						//geting the text
 	str=std::regex_replace(str,std::regex(" "),"");			//deleting all spaces
 //	std::cout << str << std::endl;
+	if(str[0]!='('){
+		std::cout << "text you entered is incorrect" << std::endl;
+		return 0;
+	}
 	if(is_valuable(str)){
 		List *lst = new List(str);
-		lst->print_list();					//creating list
-		std::cout<<std::endl;
-		lst->print_list(); 
+	//	std::cout << "the list is :" << std::endl;
+	//	std::cout << "(";
+	//	lst->print_list();
+	//	std::cout << ")";		//creating list
+	//	std::cout<<std::endl;
 		List *rev_list = rev(lst);				//reversing the list
 		std::cout << "(";
 		rev_list->print_list();
 		std::cout<<")"<<std::endl;
-		delete(rev_list);
-		delete(lst);
-
+		lst->delete_list(lst);
+		rev_list->delete_list(rev_list);
 	}
 	else{
 		std::cout << "text is not correct" << std::endl;
@@ -173,3 +185,4 @@ int main(){
 	}
 	return 0;
 }
+

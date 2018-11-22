@@ -12,7 +12,9 @@ class q_El{
 		El = el;
 		next = nullptr;
 	}
-	~q_El() = default;
+	~q_El(){
+		delete next;
+	}
 	
 };
 
@@ -35,7 +37,12 @@ class q_list{
 		
 		}	
 	}	
-        ~q_list() = default;
+        ~q_list(){
+		delete head;
+		if(head != tail){
+			delete tail;
+		}	
+	}
         void push(q_list *lst,char El){
                 q_El *ptr = new q_El(El);						//pushing an elemnt to the end of the queue
                 ptr->next = head;
