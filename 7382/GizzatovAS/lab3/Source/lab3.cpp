@@ -1,9 +1,10 @@
 #include <iostream>
+#include <regex>
 #include <string>
 #include <cstring>
 #include <ctype.h>
 #include <fstream>
-//#define READ
+#define READ
 class q_El{
 	public:
 	char El;
@@ -13,15 +14,15 @@ class q_El{
 		next = nullptr;
 	}
 	~q_El(){
-		delete next;
+//		delete next;
 	}
 	
 };
 
 class q_list{
 	public:
-	q_El *head;
-	q_El *tail;
+	q_El *head = nullptr;
+	q_El *tail = nullptr;
 	q_list(std::string str){
 		q_El *cur=nullptr;
 		q_El *ptr=nullptr;
@@ -38,10 +39,10 @@ class q_list{
 		}	
 	}	
         ~q_list(){
-		delete head;
-		if(head != tail){
-			delete tail;
-		}	
+//		delete head;
+//		if(head != tail){
+//			delete tail;
+//		}	
 	}
         void push(q_list *lst,char El){
                 q_El *ptr = new q_El(El);						//pushing an elemnt to the end of the queue
@@ -100,12 +101,14 @@ class q_list{
 };
 
 void digit_srch(q_list *lst){
-	char *text = (char*)calloc(1000,sizeof(char));
-	char *digits = (char*)calloc(1000,sizeof(char));
-	char *str = (char*)calloc(2000,sizeof(char));
+	char *text = (char*)calloc(2000,sizeof(char));
+	char *digits = (char*)calloc(2000,sizeof(char));
+	char *str = (char*)calloc(4000,sizeof(char));
 	int i=0,j=0,count;
 	char el;
+#ifdef READ
 	std::ofstream F1;
+#endif
 	count = lst->count();
 	while(count > 0){
 		el = lst->pop();
@@ -122,8 +125,6 @@ void digit_srch(q_list *lst){
 		count--;
 	}
 	i=0;
-//	std::cout<< text <<std::endl;
-//	std::cout << digits<< std::endl;
 	for(int k = strlen(text)-1;k>=0;k--){							//making the final line by reversing text, digits lines and write them into str
 		str[i] = text[k];
 	        i++;	
@@ -132,15 +133,15 @@ void digit_srch(q_list *lst){
 		str[i] = digits[l];
 		i++;
 	}
-	delete text;
-	delete digits;
 #ifdef READ
 	F1.open("2.txt",std::ios_base::app);
 	F1 << str << std::endl<<std::endl;
 	F1.close();
 #endif
 	std::cout<< str << std::endl;
-	delete str;
+		free(text);
+        	free(digits);
+		free(str);
 }
 
 
@@ -152,15 +153,12 @@ int main(){
 #ifdef READ
 	std::fstream F;
 	F.open("1.txt",std::ios::in);
-	while(1) {
-		if(!F.eof()){
-			std::getline(F, text);
+	while(!F.eof()) {
+			std::getline(F,text);
+			text=std::regex_replace(text,std::regex("\n"),"");
 			q_list lst(text);
-			digit_srch(&lst);								//doing the algorithm to each line that is gotten
-		}
-		else{
-			break;										//breaking the сycle if it is the end of the file
-		}
+			digit_srch(&lst);
+			text.clear();										//doing the algorithm to each line that is gotten
 	}
 	F.close();
 #endif
