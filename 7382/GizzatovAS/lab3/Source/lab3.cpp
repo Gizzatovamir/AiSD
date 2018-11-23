@@ -132,12 +132,15 @@ void digit_srch(q_list *lst){
 		str[i] = digits[l];
 		i++;
 	}
+	delete text;
+	delete digits;
 #ifdef READ
 	F1.open("2.txt",std::ios_base::app);
 	F1 << str << std::endl<<std::endl;
 	F1.close();
 #endif
 	std::cout<< str << std::endl;
+	delete str;
 }
 
 
